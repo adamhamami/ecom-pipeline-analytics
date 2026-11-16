@@ -1,0 +1,29 @@
+unit: load
+side_effects:
+  - source_loc: "etl/load.py:101"
+    effect: "Exécute les instructions CREATE TABLE IF NOT EXISTS de SCHEMA_SQL puis valide ce DDL par commit."
+    must_preserve: true
+  - source_loc: "etl/load.py:113"
+    effect: "Remplace les tables dimensionnelles et factuelles avec les DataFrames transformés via to_sql(if_exists='replace')."
+    must_preserve: true
+  - source_loc: "etl/load.py:142"
+    effect: "Valide les écritures et ferme la connexion après chargement."
+    must_preserve: true
+branches:
+  - source_loc: "etl/load.py:117"
+    condition: "Chargement de produits."
+    behavior: "La dimension produit est construite depuis les paires distinctes sku/category des lignes de commande."
+    must_preserve: true
+error_paths:
+  - source_loc: "etl/load.py:97"
+    trigger: "Connexion SQLite, lecture Parquet ou écriture SQL échoue."
+    outcome: "L'exception remonte; aucun rollback/handler de fermeture explicite n'est défini dans un finally."
+    contract: "Échec non intercepté de la commande."
+    must_preserve: true
+concurrency:
+  model: sync
+  tx_boundary:
+    source_loc: "etl/load.py:101"
+    scope: "Le DDL est commité avant les appels to_sql; un commit explicite suit les écritures. Aucun rollback explicite n'est défini."
+    isolation: "SQLite par défaut; aucune isolation personnalisée déclarée."
+    must_preserve: true

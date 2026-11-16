@@ -1,0 +1,16 @@
+unit: extract
+bindings: []
+reason: "Script Python direct sans framework applicatif."
+runtime_config:
+  - key: data_paths
+    source_loc: "config/config.yaml:1"
+    source: yaml
+    default_value: null
+    must_appear_in_target: true
+    notes: "Chemins des trois CSV sources."
+  - key: processed_paths
+    source_loc: "config/config.yaml:6"
+    source: yaml
+    default_value: null
+    must_appear_in_target: true
+    notes: "Chemins des Parquet intermédiaires."

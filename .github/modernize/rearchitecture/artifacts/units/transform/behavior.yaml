@@ -1,0 +1,32 @@
+unit: transform
+side_effects:
+  - source_loc: "etl/transform.py:85"
+    effect: "Écrit orders_transformed.parquet."
+    must_preserve: true
+  - source_loc: "etl/transform.py:95"
+    effect: "Écrit order_items_transformed.parquet."
+    must_preserve: true
+  - source_loc: "etl/transform.py:105"
+    effect: "Écrit customers_transformed.parquet."
+    must_preserve: true
+branches:
+  - source_loc: "etl/transform.py:34"
+    condition: "Une date de commande ou d'expédition est absente/invalide."
+    behavior: "La conversion date utilise errors='coerce'; les dates invalides deviennent NaT."
+    must_preserve: true
+  - source_loc: "etl/transform.py:39"
+    condition: "Chaque ligne de commande."
+    behavior: "gmv est égal à subtotal et net_revenue à total."
+    must_preserve: true
+  - source_loc: "etl/transform.py:48"
+    condition: "Chaque ligne de commande."
+    behavior: "on_time vaut le résultat de actual_ship_date <= promised_ship_date."
+    must_preserve: true
+error_paths:
+  - source_loc: "etl/transform.py:79"
+    trigger: "Parquet absent, colonne attendue manquante ou conversion/écriture impossible."
+    outcome: "L'exception remonte; aucune reprise n'est définie."
+    contract: "Échec non intercepté de la commande."
+    must_preserve: true
+concurrency:
+  model: sync

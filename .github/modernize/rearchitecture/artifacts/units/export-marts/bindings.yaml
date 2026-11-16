@@ -1,0 +1,4 @@
+unit: export-marts
+bindings: []
+reason: "Script Python direct utilisant SQLite/Pandas sans framework applicatif."
+runtime_config: []

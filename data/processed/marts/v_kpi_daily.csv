@@ -1,0 +1,4 @@
+order_date,orders_count,gmv,net_revenue,on_time_rate
+2024-01-05,1,80,92.2,1.0
+2024-01-06,1,50,49.0,1.0
+2024-01-07,1,120,121.6,1.0

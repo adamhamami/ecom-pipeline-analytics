@@ -1,0 +1,95 @@
+units:
+  - name: full-pipeline
+    trigger: cli
+    trigger_detail: "python etl/pipeline.py"
+    source_anchors:
+      - path: etl/pipeline.py
+        line: 21
+    exported_signature:
+      - method: "None run_pipeline()"
+        source_loc: "etl/pipeline.py:21"
+        stability: may_change
+    dynamic_entrypoints: []
+    depends_on:
+      - unit: extract
+        via: "run_pipeline() appelle extract_raw_to_processed()"
+      - unit: validate
+        via: "run_pipeline() appelle run_validation(save_report=True)"
+      - unit: transform
+        via: "run_pipeline() appelle run_transforms()"
+      - unit: load
+        via: "run_pipeline() appelle run_load()"
+    shared_refs: []
+  - name: extract
+    trigger: cli
+    trigger_detail: "python etl/extract.py"
+    source_anchors:
+      - path: etl/extract.py
+        line: 31
+    exported_signature:
+      - method: "None extract_raw_to_processed()"
+        source_loc: "etl/extract.py:31"
+        stability: must_preserve
+    dynamic_entrypoints: []
+    depends_on: []
+    shared_refs:
+      - module: pipeline-config
+        used_fields: [data_paths, processed_paths]
+  - name: validate
+    trigger: cli
+    trigger_detail: "python etl/validate.py"
+    source_anchors:
+      - path: etl/validate.py
+        line: 72
+    exported_signature:
+      - method: "None run_validation(save_report: bool = True)"
+        source_loc: "etl/validate.py:72"
+        stability: must_preserve
+    dynamic_entrypoints: []
+    depends_on: []
+    shared_refs:
+      - module: pipeline-config
+        used_fields: [processed_paths]
+  - name: transform
+    trigger: cli
+    trigger_detail: "python etl/transform.py"
+    source_anchors:
+      - path: etl/transform.py
+        line: 73
+    exported_signature:
+      - method: "None run_transforms()"
+        source_loc: "etl/transform.py:73"
+        stability: must_preserve
+    dynamic_entrypoints: []
+    depends_on: []
+    shared_refs:
+      - module: pipeline-config
+        used_fields: [processed_paths]
+  - name: load
+    trigger: cli
+    trigger_detail: "python etl/load.py"
+    source_anchors:
+      - path: etl/load.py
+        line: 91
+    exported_signature:
+      - method: "None run_load()"
+        source_loc: "etl/load.py:91"
+        stability: must_preserve
+    dynamic_entrypoints: []
+    depends_on: []
+    shared_refs:
+      - module: pipeline-config
+        used_fields: [database.url]
+  - name: export-marts
+    trigger: cli
+    trigger_detail: "python etl/export_marts.py"
+    source_anchors:
+      - path: etl/export_marts.py
+        line: 15
+    exported_signature:
+      - method: "None export_all()"
+        source_loc: "etl/export_marts.py:15"
+        stability: may_change
+    dynamic_entrypoints: []
+    depends_on: []
+    shared_refs: []

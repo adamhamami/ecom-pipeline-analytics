@@ -1,0 +1,21 @@
+unit: export-marts
+side_effects:
+  - source_loc: "etl/export_marts.py:9"
+    effect: "Lit toutes les lignes d'une vue SQLite nommée."
+    must_preserve: true
+  - source_loc: "etl/export_marts.py:11"
+    effect: "Crée le dossier parent si nécessaire et écrit le résultat en CSV sans index."
+    must_preserve: true
+branches:
+  - source_loc: "etl/export_marts.py:18"
+    condition: "Chaque paire vue/chemin de la liste exports."
+    behavior: "Exporte séquentiellement quatre vues prédéfinies vers quatre CSV."
+    must_preserve: true
+error_paths:
+  - source_loc: "etl/export_marts.py:9"
+    trigger: "Base absente/invalide ou vue SQL manquante."
+    outcome: "L'erreur SQLite/Pandas remonte; les exports suivants ne sont pas effectués."
+    contract: "Échec non intercepté de la commande."
+    must_preserve: true
+concurrency:
+  model: sync

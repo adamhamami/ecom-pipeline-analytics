@@ -1,0 +1,4 @@
+segment,year_month,avg_order_value,orders_count
+Consumer,2024-01,92.2,1
+Enterprise,2024-01,121.6,1
+SMB,2024-01,49.0,1

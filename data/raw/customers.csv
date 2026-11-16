@@ -1,0 +1,4 @@
+customer_id,signup_date,city,state,segment
+1,2023-11-10,New York,NY,Consumer
+2,2023-12-01,Buffalo,NY,SMB
+3,2023-10-20,Albany,NY,Enterprise

@@ -1,0 +1,10 @@
+unit: load
+bindings: []
+reason: "Accès direct à SQLite via la bibliothèque standard, sans ORM."
+runtime_config:
+  - key: database.url
+    source_loc: "config/config.yaml:11"
+    source: yaml
+    default_value: null
+    must_appear_in_target: true
+    notes: "URL SQLite transformée en chemin local par le chargeur."

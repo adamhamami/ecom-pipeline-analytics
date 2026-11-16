@@ -1,0 +1,12 @@
+data_paths:
+  orders: "data/raw/orders.csv"
+  order_items: "data/raw/order_items.csv"
+  customers: "data/raw/customers.csv"
+
+processed_paths:
+  orders: "data/processed/orders.parquet"
+  order_items: "data/processed/order_items.parquet"
+  customers: "data/processed/customers.parquet"
+
+database:
+  url: "sqlite:///data/processed/ecom_analytics.db"

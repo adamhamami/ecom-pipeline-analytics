@@ -1,0 +1,43 @@
+unit: validate
+side_effects:
+  - source_loc: "etl/validate.py:89"
+    effect: "Remplace docs/data_quality.md par le rapport de contrôle lorsqu'on appelle run_validation avec save_report=True."
+    must_preserve: true
+branches:
+  - source_loc: "etl/validate.py:32"
+    condition: "Des colonnes requises manquent."
+    behavior: "Ajoute leurs noms au rapport et affiche un avertissement, puis continue les contrôles."
+    must_preserve: true
+  - source_loc: "etl/validate.py:43"
+    condition: "Des champs de clé obligatoires sont nuls."
+    behavior: "Retire les lignes concernées du DataFrame retourné."
+    must_preserve: true
+  - source_loc: "etl/validate.py:48"
+    condition: "total < 0."
+    behavior: "Retire les lignes concernées."
+    must_preserve: true
+  - source_loc: "etl/validate.py:53"
+    condition: "Le total ne correspond pas à subtotal - discount + shipping_fee + tax, arrondi à 2 décimales."
+    behavior: "Compte les écarts puis exclut ces lignes du DataFrame retourné."
+    must_preserve: true
+  - source_loc: "etl/validate.py:60"
+    condition: "actual_ship_date est antérieure à order_date."
+    behavior: "Compte les lignes invalides; ne les exclut pas à cet endroit."
+    must_preserve: true
+  - source_loc: "etl/validate.py:65"
+    condition: "Plusieurs lignes partagent le même order_id."
+    behavior: "Garde la première ligne et compte les doublons retirés."
+    must_preserve: true
+error_paths:
+  - source_loc: "etl/validate.py:34"
+    trigger: "Une colonne requise est absente."
+    outcome: "Un avertissement est affiché, mais l'accès ultérieur aux colonnes attendues peut lever KeyError."
+    contract: "Exception non interceptée si le traitement poursuit sur une colonne absente."
+    must_preserve: true
+  - source_loc: "etl/validate.py:76"
+    trigger: "Le Parquet d'entrée ne peut pas être lu."
+    outcome: "L'exception de lecture remonte."
+    contract: "Échec non intercepté de la commande."
+    must_preserve: true
+concurrency:
+  model: sync

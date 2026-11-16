@@ -1,0 +1,10 @@
+# Python
+__pycache__/
+.venv/
+
+# Data outputs
+data/processed/*.parquet
+data/processed/ecom_analytics.db
+
+# BI artifacts
+bi/*.pbix

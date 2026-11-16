@@ -1,0 +1,16 @@
+modules:
+  - name: pipeline-config
+    kind: config
+    source_loc: "config/config.yaml:1"
+    used_by_units: [extract, validate, transform, load]
+    fields:
+      - name: data_paths
+        type: "mapping[str, str]"
+      - name: processed_paths
+        type: "mapping[str, str]"
+      - name: database.url
+        type: "str"
+    god_class: false
+    split_candidate: false
+    migration_strategy: copy
+    notes: "Configuration YAML lu par plusieurs étapes; aucune logique partagée n'y est définie."

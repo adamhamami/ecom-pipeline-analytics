@@ -1,0 +1,17 @@
+unit: full-pipeline
+side_effects:
+  - source_loc: "etl/pipeline.py:23"
+    effect: "Exécute successivement l'extraction, le rapport de validation, les transformations et le chargement SQLite."
+    must_preserve: true
+  - source_loc: "etl/pipeline.py:34"
+    effect: "Affiche un message de succès après le retour de toutes les étapes."
+    must_preserve: true
+branches: []
+error_paths:
+  - source_loc: "etl/pipeline.py:34"
+    trigger: "Une étape lève une exception."
+    outcome: "L'exception remonte; les étapes suivantes et le message final ne sont pas exécutés."
+    contract: "Échec du processus non intercepté."
+    must_preserve: true
+concurrency:
+  model: sync

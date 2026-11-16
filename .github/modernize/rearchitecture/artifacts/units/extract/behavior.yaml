@@ -1,0 +1,21 @@
+unit: extract
+side_effects:
+  - source_loc: "etl/extract.py:47"
+    effect: "Lit chaque CSV configuré pour orders, order_items et customers."
+    must_preserve: true
+  - source_loc: "etl/extract.py:55"
+    effect: "Écrit un Parquet par dataset dans les chemins processed_paths."
+    must_preserve: true
+branches:
+  - source_loc: "etl/extract.py:43"
+    condition: "La boucle traite les noms orders, order_items et customers dans cet ordre."
+    behavior: "Chaque dataset est traité séquentiellement."
+    must_preserve: true
+error_paths:
+  - source_loc: "etl/extract.py:47"
+    trigger: "CSV absent/invalide, configuration incorrecte ou écriture Parquet impossible."
+    outcome: "L'exception Pandas/Python remonte; aucune récupération n'est définie."
+    contract: "Échec non intercepté de la commande."
+    must_preserve: true
+concurrency:
+  model: sync

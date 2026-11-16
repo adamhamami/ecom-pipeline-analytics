@@ -1,0 +1,99 @@
+contracts:
+  - name: orders-source-csv
+    unit: extract
+    type: file
+    stability: must_preserve
+    source_loc: "etl/extract.py:47"
+    contract:
+      path: "data/raw/orders.csv"
+      request: "CSV avec order_id, order_date, customer_id, channel, status, subtotal, shipping_fee, discount, tax, total, promised_ship_date, actual_ship_date"
+      response: "data/processed/orders.parquet avec les colonnes d'entrée"
+      error: "Les erreurs de lecture/écriture remontent à l'appelant."
+    target_contract:
+      method: "Conserver le nom du fichier et le schéma de colonnes CSV observé."
+      notes: "Aucune plateforme cible n'a été spécifiée."
+    semantic_divergence: []
+  - name: order-items-source-csv
+    unit: extract
+    type: file
+    stability: must_preserve
+    source_loc: "etl/extract.py:47"
+    contract:
+      path: "data/raw/order_items.csv"
+      request: "CSV avec order_id, sku, qty, unit_price, category"
+      response: "data/processed/order_items.parquet avec les colonnes d'entrée"
+      error: "Les erreurs de lecture/écriture remontent à l'appelant."
+    target_contract:
+      method: "Conserver le nom du fichier et le schéma de colonnes CSV observé."
+      notes: "Aucune plateforme cible n'a été spécifiée."
+    semantic_divergence: []
+  - name: customers-source-csv
+    unit: extract
+    type: file
+    stability: must_preserve
+    source_loc: "etl/extract.py:47"
+    contract:
+      path: "data/raw/customers.csv"
+      request: "CSV avec customer_id, signup_date, city, state, segment"
+      response: "data/processed/customers.parquet avec les colonnes d'entrée"
+      error: "Les erreurs de lecture/écriture remontent à l'appelant."
+    target_contract:
+      method: "Conserver le nom du fichier et le schéma de colonnes CSV observé."
+      notes: "Aucune plateforme cible n'a été spécifiée."
+    semantic_divergence: []
+  - name: daily-kpi-view
+    unit: export-marts
+    type: sql
+    stability: must_preserve
+    source_loc: "sql/marts.sql:5"
+    contract:
+      path: "v_kpi_daily"
+      request: "Lecture de la vue sans paramètres"
+      response: "order_date, orders_count, gmv, net_revenue, on_time_rate"
+      error: "La requête échoue si la vue n'existe pas dans la base."
+    target_contract:
+      method: "Conserver le nom v_kpi_daily et ses colonnes observées."
+      notes: "Aucune plateforme cible n'a été spécifiée."
+    semantic_divergence: []
+  - name: channel-revenue-view
+    unit: export-marts
+    type: sql
+    stability: must_preserve
+    source_loc: "sql/marts.sql:17"
+    contract:
+      path: "v_revenue_by_channel"
+      request: "Lecture de la vue sans paramètres"
+      response: "channel, year_month, net_revenue, orders_count"
+      error: "La requête échoue si la vue n'existe pas dans la base."
+    target_contract:
+      method: "Conserver le nom v_revenue_by_channel et ses colonnes observées."
+      notes: "Aucune plateforme cible n'a été spécifiée."
+    semantic_divergence: []
+  - name: segment-aov-view
+    unit: export-marts
+    type: sql
+    stability: must_preserve
+    source_loc: "sql/marts.sql:28"
+    contract:
+      path: "v_aov_by_segment"
+      request: "Lecture de la vue sans paramètres"
+      response: "segment, year_month, avg_order_value, orders_count"
+      error: "La requête échoue si la vue n'existe pas dans la base."
+    target_contract:
+      method: "Conserver le nom v_aov_by_segment et ses colonnes observées."
+      notes: "Aucune plateforme cible n'a été spécifiée."
+    semantic_divergence: []
+  - name: shipping-performance-view
+    unit: export-marts
+    type: sql
+    stability: must_preserve
+    source_loc: "sql/marts.sql:41"
+    contract:
+      path: "v_ship_perf"
+      request: "Lecture de la vue sans paramètres"
+      response: "year_month, avg_days_to_ship, late_rate"
+      error: "La requête échoue si la vue n'existe pas dans la base."
+    target_contract:
+      method: "Conserver le nom v_ship_perf et ses colonnes observées."
+      notes: "Aucune plateforme cible n'a été spécifiée."
+    semantic_divergence: []

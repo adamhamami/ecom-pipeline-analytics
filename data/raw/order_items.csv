@@ -1,0 +1,5 @@
+order_id,sku,qty,unit_price,category
+1001,SKU-RED-TSHIRT,1,40,Apparel
+1001,SKU-BLUE-JEANS,1,40,Apparel
+1002,SKU-MUG-WHITE,2,25,Home
+1003,SKU-HEADPHONES,1,120,Electronics

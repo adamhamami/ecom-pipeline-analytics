@@ -1,0 +1,10 @@
+unit: transform
+bindings: []
+reason: "Script Python direct sans framework applicatif."
+runtime_config:
+  - key: processed_paths
+    source_loc: "config/config.yaml:6"
+    source: yaml
+    default_value: null
+    must_appear_in_target: true
+    notes: "Chemins des Parquet d'entrée; destinations transformées codées en dur."

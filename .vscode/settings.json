@@ -1,0 +1,11 @@
+{
+    "sqltools.useNodeRuntime": true,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:ecom-mini-pipeline}/data/processed/ecom_analytics.db",
+            "name": "ecom_analytics.db"
+        }
+    ]
+}

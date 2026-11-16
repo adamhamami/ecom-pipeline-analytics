@@ -1,0 +1,4 @@
+unit: full-pipeline
+bindings: []
+reason: "Commande Python directe; pas de framework, route, conteneur DI ni ordonnanceur déclaré."
+runtime_config: []
